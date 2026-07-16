@@ -1,0 +1,49 @@
+name: revosilium
+description: REVOSILIUM v3 — Communication P2P chiffrée + BlackBox Phantom SMS. Zéro serveur. 100% intraçable.
+publish_to: 'none'
+version: 3.0.0+1
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Cryptographie
+  crypto: ^3.0.3
+  encrypt: ^5.0.3
+  pointycastle: ^3.7.3
+  # Stockage local
+  sqflite: ^2.3.2
+  path_provider: ^2.1.2
+  shared_preferences: ^2.2.2
+  # QR Code
+  qr_flutter: ^4.1.0
+  # Animations
+  lottie: ^3.1.0
+  shimmer: ^3.0.0
+  # Utilitaires
+  intl: ^0.19.0
+  uuid: ^4.2.1
+  permission_handler: ^11.1.0
+  connectivity_plus: ^5.0.2
+  # Audio (messages vocaux)
+  record: ^5.0.4
+  audioplayers: ^5.2.1
+  # Fichiers
+  file_picker: ^6.1.1
+  open_file: ^3.3.2
+  # Notifications
+  flutter_local_notifications: ^16.3.2
+  # Google Fonts
+  google_fonts: ^6.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/

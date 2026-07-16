@@ -1,0 +1,88 @@
+# REVOSILIUM v3 — GitLab CI/CD
+# Build automatique de l'APK à chaque push sur main
+
+stages:
+  - build
+  - release
+
+variables:
+  FLUTTER_VERSION: "3.27.0"
+  APP_NAME: "REVOSILIUM"
+  VERSION: "3.0.0"
+
+before_script:
+  - apt-get update -qq && apt-get install -y -qq unzip wget xz-utils git
+  # Télécharger Flutter SDK
+  - wget -q https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz
+  - tar xf flutter_linux_${FLUTTER_VERSION}-stable.tar.xz
+  - export PATH="$PWD/flutter/bin:$PATH"
+  - flutter config --no-analytics
+  - flutter doctor
+
+build:apk:
+  stage: build
+  image: eclipse-temurin:17-jdk
+  tags:
+    - docker
+  script:
+    - export ANDROID_SDK_ROOT=/opt/android-sdk
+    - export ANDROID_HOME=/opt/android-sdk
+    - export PATH="$PWD/flutter/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH"
+
+    # Installer Android SDK
+    - mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
+    - wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+    - unzip -q commandlinetools-linux-11076708_latest.zip -d $ANDROID_SDK_ROOT/cmdline-tools
+    - mv $ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools $ANDROID_SDK_ROOT/cmdline-tools/latest
+    - yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
+    - $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;36.0.0" "platform-tools"
+
+    # Build
+    - flutter clean
+    - flutter pub get
+    - flutter build apk --release --split-per-abi
+
+    # Renommer les APKs
+    - mkdir -p apks
+    - cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk apks/${APP_NAME}_v${VERSION}_arm64.apk
+    - cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk apks/${APP_NAME}_v${VERSION}_arm32.apk
+    - cp build/app/outputs/flutter-apk/app-x86_64-release.apk apks/${APP_NAME}_v${VERSION}_x86_64.apk
+
+  artifacts:
+    name: "${APP_NAME}_v${VERSION}_${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - apks/*.apk
+    expire_in: 30 days
+  only:
+    - main
+    - tags
+
+release:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    - build:apk
+  script:
+    - echo "Release v${VERSION}"
+  release:
+    name: "${APP_NAME} v${VERSION}"
+    description: |
+      ## ${APP_NAME} v${VERSION} — BlackBox Phantom
+      
+      - 🔒 Chiffrement AES-256
+      - 🖤 BlackBox Phantom SMS
+      - 👻 Mode Ghost DTMF
+      - 📡 Détection modem auto
+      - 💬 Chat P2P chiffré
+    tag_name: "v${VERSION}"
+    ref: "$CI_COMMIT_SHA"
+    assets:
+      links:
+        - name: "APK ARM64"
+          url: "${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}/artifacts/raw/apks/${APP_NAME}_v${VERSION}_arm64.apk"
+        - name: "APK ARM32"
+          url: "${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}/artifacts/raw/apks/${APP_NAME}_v${VERSION}_arm32.apk"
+        - name: "APK x86_64"
+          url: "${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}/artifacts/raw/apks/${APP_NAME}_v${VERSION}_x86_64.apk"
+  only:
+    - tags
