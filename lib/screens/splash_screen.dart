@@ -310,7 +310,7 @@ class _SplashScreenState extends State<SplashScreen>
                   R.pri,
                 ],
               ).createShader(bounds),
-              child: const Text('REVOSILIUM', style: R.hero),
+              child: Text('REVOSILIUM', style: R.hero),
             ),
           ],
         );
