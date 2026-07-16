@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../theme/revosilium_theme.dart';
 import '../models/chat_message.dart';
 
+/* ignore_for_file: unused_import */
+
 /// Bulle de message néomorphique premium
 class MessageBubble extends StatelessWidget {
   final ChatMessage msg;
@@ -94,6 +96,7 @@ class MessageBubble extends StatelessWidget {
       case MessageType.system:
         return _buildSystemContent();
     }
+    return _buildTextContent(); // fallback
   }
 
   Widget _buildTextContent() {
@@ -263,6 +266,7 @@ class MessageBubble extends StatelessWidget {
       case MessageStatus.failed:
         return Icon(Icons.error_outline, size: 12, color: R.err);
     }
+    return const SizedBox.shrink();
   }
 
   String _formatSize(int bytes) {
