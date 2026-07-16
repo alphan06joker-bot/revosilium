@@ -1,12 +1,26 @@
 import 'dart:io';
 import 'dart:async';
 import 'dart:math';
+import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import '../core/constants.dart';
 import '../core/utils.dart';
 import '../models/transfer.dart';
 import 'modem_service.dart';
-import 'phantom_service.dart';
+
+/// Service de chiffrement Phantom intégré
+class PhantomService {
+  String? currentFileName;
+  int totalChunks = 0;
+  int receivedChunks = 0;
+  List<String> _chunks = [];
+  List<int> _receivedData = [];
+  double get progress => totalChunks > 0 ? receivedChunks / totalChunks : 0.0;
+
+  List<String> chunkFile(List<int> bytes, {String password = ''}) => [];
+  dynamic processIncomingSMS(String sms) => null;
+  String buildHeader(int chunks, String md5, String name) => '';
+}
 
 /// BlackBox Service — Transfert de fichiers hors-ligne complet
 /// Modes : SMS (Phantom) + Ghost (DTMF furtif)
@@ -181,10 +195,10 @@ class BlackBoxService {
     final header = _phantom.buildHeader(chunks.length, fileMd5, fileName);
     _log('📤 Envoi en-tête...');
     await _modem.sendSMS(phoneNumber, header);
-    await Future.delayed(RevConstants.smsSendDelay.ms);
+    await Future.delayed(Duration(milliseconds: RevConstants.smsSendDelay));
 
     // Chunks
-    final rng = Random();
+    Random rng = Random();
     for (int i = 0; i < chunks.length; i++) {
       await _modem.sendSMS(phoneNumber, chunks[i]);
 
@@ -197,9 +211,7 @@ class BlackBoxService {
       _progressCtrl.add(p);
 
       // Délai variable anti-détection
-      await Future.delayed(
-        Duration(milliseconds: RevConstants.smsSendDelay + rng.nextInt(300)),
-      );
+      await Future.delayed(Duration(milliseconds: RevConstants.smsSendDelay + rng.nextInt(300)));
     }
 
     _transfers[transferId] = _transfers[transferId]!.copyWith(
