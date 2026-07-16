@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/peer.dart';
+import '../core/extensions.dart';
 import '../theme/revosilium_theme.dart';
 import '../widgets/particle_background.dart';
 
