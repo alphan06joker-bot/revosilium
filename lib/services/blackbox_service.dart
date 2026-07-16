@@ -85,7 +85,7 @@ class BlackBoxService {
 
       _transfers[_currentTransferId!] = BlackBoxTransfer(
         id: _currentTransferId!,
-        fileName: _phantom.currentFileName,
+        fileName: _phantom.currentFileName ?? 'unknown',
         totalChunks: _phantom.totalChunks,
         startTime: DateTime.now(),
         status: TransferStatus.receiving,
