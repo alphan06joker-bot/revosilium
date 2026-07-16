@@ -217,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen>
                 const SizedBox(height: 20),
                 ShaderMask(
                   shaderCallback: (bounds) => R.gradientPrimary.createShader(bounds),
-                  child: const Text('REVOSILIUM', style: R.h1),
+                  child: Text('REVOSILIUM', style: R.h1),
                 ),
                 const SizedBox(height: 6),
                 Text(
@@ -262,7 +262,7 @@ class _HomeScreenState extends State<HomeScreen>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('MON ADRESSE', style: R.caption),
+                        Text('MON ADRESSE', style: R.caption),
                         Row(
                           children: [
                             GestureDetector(
@@ -390,7 +390,7 @@ class _HomeScreenState extends State<HomeScreen>
                     child: const Icon(Icons.call_received_rounded, color: R.pri, size: 26),
                   ),
                   const SizedBox(height: 14),
-                  const Text('INVITATION ENTRANTE', style: R.h2),
+                  Text('INVITATION ENTRANTE', style: R.h2),
                   const SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
@@ -441,7 +441,7 @@ class _HomeScreenState extends State<HomeScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('INVITER UN CONTACT', style: R.caption),
+          Text('INVITER UN CONTACT', style: R.caption),
           const SizedBox(height: 16),
           Focus(
             onFocusChange: (focused) {},
@@ -591,7 +591,7 @@ class _HomeScreenState extends State<HomeScreen>
               children: [
                 const Icon(Icons.shield, color: R.pri, size: 22),
                 const SizedBox(width: 10),
-                const Text('SÉCURITÉ', style: R.h2),
+                Text('SÉCURITÉ', style: R.h2),
               ],
             ),
             content: Column(
@@ -605,7 +605,7 @@ class _HomeScreenState extends State<HomeScreen>
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Chiffrement AES-256', style: R.body),
+                          Text('Chiffrement AES-256', style: R.body),
                           Icon(Icons.check_circle, color: R.pri, size: 18),
                         ],
                       ),
@@ -613,7 +613,7 @@ class _HomeScreenState extends State<HomeScreen>
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('P2P Direct', style: R.body),
+                          Text('P2P Direct', style: R.body),
                           Icon(Icons.check_circle, color: R.pri, size: 18),
                         ],
                       ),
@@ -621,7 +621,7 @@ class _HomeScreenState extends State<HomeScreen>
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Zéro Serveur', style: R.body),
+                          Text('Zéro Serveur', style: R.body),
                           Icon(Icons.check_circle, color: R.pri, size: 18),
                         ],
                       ),
