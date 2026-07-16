@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'screens/splash_screen.dart';
-import 'core/constants.dart';
 import 'theme/revosilium_theme.dart';
 
 void main() {
@@ -63,7 +61,7 @@ class RevosiliumApp extends StatelessWidget {
             return TextStyle(color: R.txt2.withOpacity(0.4), fontSize: 10, letterSpacing: 1);
           }),
         ),
-        dialogTheme: DialogThemeData(
+        dialogTheme: DialogTheme(
           backgroundColor: R.srf,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         ),
@@ -72,10 +70,30 @@ class RevosiliumApp extends StatelessWidget {
           contentTextStyle: const TextStyle(color: R.txt),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           behavior: SnackBarBehavior.floating,
-          margin: const EdgeInsets.all(16),
         ),
       ),
-      home: const SplashScreen(),
+      home: const HomeScreen(),
+    );
+  }
+}
+
+/// Placeholder Home Screen
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: R.bg,
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('REVOSILIUM v3', style: R.h1),
+            const SizedBox(height: 10),
+            Text('P2P · CHIFFRÉ · INTRAÇABLE', style: TextStyle(color: R.txt2, fontSize: 9, letterSpacing: 4)),
+          ],
+        ),
+      ),
     );
   }
 }
